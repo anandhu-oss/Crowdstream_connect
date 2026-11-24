@@ -93,9 +93,9 @@ Open `http://localhost:5500`. Interactive API docs for summarization are at `htt
 
 ### Model server
 
-Qwen3.5-9B runs on a GPU (tested: 4-bit on a Kaggle T4) and is exposed through an ngrok URL.
+Qwen3.5-9B runs on a GPU and is exposed through an ngrok URL.
 
-1. Start the model-server notebook on Kaggle and wait for the "API READY" message.
+1. Start the model-server notebook and wait for the "API READY" message.
 2. Copy the two printed values into `summarization/.env`:
 
    ```env
