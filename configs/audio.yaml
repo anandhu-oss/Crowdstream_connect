@@ -1,0 +1,67 @@
+audio:
+  sample_rate: 16000
+  normalize: rms
+  target_rms_dbfs: -20
+  normalize_tolerance_db: 2
+  normalize_peak: 0.95
+  max_gain_db: 20
+  highpass_hz: 80
+  highpass_order: 2
+  denoise: false
+  clip_level: 0.999
+  clip_warn_ratio: 0.001
+  clip_severe_ratio: 0.02
+  silence_peak: 0.0001
+  silence_dbfs: -65
+  quiet_speech_dbfs: -45
+  min_snr_db: 10
+  min_duration_s: 0.05
+  allowed_input_rates: [8000, 11025, 16000, 22050, 24000, 32000, 44100, 48000]
+vad:
+  backend: auto
+  threshold: 0.5
+  min_speech_ms: 250
+  min_silence_ms: 300
+  speech_pad_ms: 100
+  noisy_floor_dbfs: -40
+  noisy_threshold_bump: 0.1
+  energy_margin_db: 9
+  energy_floor_dbfs: -52
+  energy_start_frames: 3
+  energy_adapt_rate: 0.03
+segments:
+  max_seconds: 25
+  min_seconds: 0.2
+  merge_gap_seconds: 0.6
+  split_search_fraction: 0.4
+gate:
+  action: flag
+  min_segment_dbfs: -55
+  bleed: true
+  bleed_margin_db: 15
+  bleed_history: 20
+  cross_track_margin_db: 12
+  cross_track_soft_margin_db: 6
+  cross_track_correlation: 0.6
+  cross_track_overlap_s: 0.3
+streaming:
+  input_format: pcm_s16le
+  frame_samples: 512
+  chunk_ms: 200
+  preroll_ms: 300
+  endpoint_silence_ms: 450
+  min_utterance_seconds: 0.25
+  max_utterance_seconds: 12
+  overlap_ms: 500
+  forced_cut_search_fraction: 0.35
+  max_buffer_seconds: 40
+  partial_interval_s: 1.5
+  min_partial_seconds: 0.8
+  min_partial_growth_s: 0.4
+  partial_load_factor: 1.0
+  max_inflight_chunks: 200
+  max_chunk_bytes: 4194304
+  max_message_bytes: 12582912
+  drain_timeout_s: 45
+  session_resume_ttl_s: 60
+  keep_captions: 300

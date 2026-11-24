@@ -1,0 +1,111 @@
+language:
+  detector: compare          # run VoxLingua and Qwen3-ASR's built-in language ID on every chunk and fuse them
+  primary: qwen              # only breaks ties when two known languages disagree and neither side is confident
+  window_seconds: 20
+  min_confidence: 0.5
+  override_confidence: 0.85  # a lone detector may overrule the other only above this score
+  accept_confidence: 0.6     # VoxLingua (scored over the mapped languages only) is trusted outright above this
+  blind_min_confidence: 0.35 # Malayalam/Tamil: Qwen3-ASR cannot identify them, so VoxLingua decides from this score up
+  floor_confidence: 0.3      # below this, with no other evidence, a chunk is left unresolved; above it the best guess is used and flagged uncertain
+  min_supported_mass: 0.2    # if less than this of VoxLingua's probability is on mapped languages, the audio is treated as an unsupported language
+  vox_fold: {yue: zh, ur: hi}  # near-identical VoxLingua labels counted toward the mapped language
+  neighbor_max_gap_s: 2.0    # uploads: an unresolved chunk with no candidate language may borrow an adjacent chunk's language
+  voxlingua:
+    backend: auto              # auto = the Kaggle /identify-language API when VOXLINGUA_API_URL and VOXLINGUA_API_KEY are set, else local speechbrain
+    api_url_env: VOXLINGUA_API_URL
+    api_key_env: VOXLINGUA_API_KEY
+    timeout: 15
+    connect_timeout: 5
+    max_concurrent: 2
+    retries: 1
+  on_uncertain: reject
+  on_unsupported: reject
+  best_guess_model: null
+  verify_suspect: false
+  live:
+    switch_min_seconds: 2.0
+    strong_seconds: 4.0
+    switch_confirmations: 2
+    lock_min_seconds: 1.2
+    recheck_every: 1
+    default_language: null
+
+asr:
+  default_model: qwen3_asr
+  models:
+    qwen3_asr:
+      checkpoint: Qwen/Qwen3-ASR-1.7B
+      api_url_env: QWEN_API_URL
+      api_key_env: QWEN_API_KEY
+      timeout: 120
+      connect_timeout: 5
+      interim_timeout: 20
+      max_concurrent: 2
+      retries: 2
+      backoff_s: 0.4
+      queue_timeout_s: 60
+      min_audio_seconds: 0.5
+      max_audio_seconds: 30
+      cache_size: 64
+      send_context: false
+    indic:
+      checkpoint: bodhan-ai/Indic-Transcribe-Flex
+      backend: auto
+      mode: mixed            # native | mixed | romanized  (sent as `mode`; the old ctc/rnnt `decoder` no longer exists)
+      languages: [ta, ml, hi]
+      api_url_env: INDIC_API_URL
+      api_key_env: INDIC_API_KEY
+      hf_token_env: HF_TOKEN
+      timeout: 120
+      connect_timeout: 5
+      interim_timeout: 25
+      max_concurrent: 1
+      retries: 2
+      queue_timeout_s: 60
+      max_audio_seconds: 30
+      min_audio_seconds: 0.5
+  routing:
+    en: qwen3_asr
+    hi: qwen3_asr
+    de: qwen3_asr
+    fr: qwen3_asr
+    es: qwen3_asr
+    zh: qwen3_asr
+    ja: qwen3_asr
+    it: qwen3_asr
+    ar: qwen3_asr
+    ta: indic
+    ml: indic
+  fallback:
+    hi: [indic]
+
+translation:
+  enabled: true
+  backend: remote
+  api_url_env: MADLAD_API_URL
+  checkpoint: google/madlad400-3b-mt
+  cache_size: 512
+  max_chars: 400
+  timeout: 60
+  connect_timeout: 5
+  interim_timeout: 15
+  max_concurrent: 2
+  retries: 1
+  queue_timeout_s: 30
+  breaker_failures: 4
+  breaker_cooldown_s: 15
+  interim: true
+  interim_min_words: 5
+  interim_min_interval_s: 1.5
+  interim_min_growth_words: 3
+
+concurrency:
+  asr: 2
+  uploads: 1
+  translation: 2
+  max_live_sessions: 8
+  shed_waiting: 4
+
+service:
+  max_upload_mb: 200
+  cors_origins: ["*"]

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multilingual AI Meeting Assistant</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div>
+    <h1>Multilingual AI Meeting Assistant</h1>
+    <p class="subtitle">Live Transcription &amp; Translation</p>
+  </div>
+  <div class="header-right">
+    <label class="mock-toggle"><input type="checkbox" id="mockToggle"> Mock mode</label>
+    <span class="conn" id="conn" data-state="connecting"><span class="dot"></span><span id="connLabel">Connecting</span></span>
+    <span class="conn" id="session" data-state="connecting" hidden><span class="dot"></span><span id="sessionLabel"></span></span>
+  </div>
+</header>
+
+<div class="mock-banner" id="mockBanner" hidden>SIMULATED DATA &mdash; mock mode is on. Captions below are not real AI output.</div>
+<div class="error-bar" id="errorBar" role="alert" hidden></div>
+
+<nav class="tabs" aria-label="Sections">
+  <button type="button" class="tab active" id="tabTranscribe" data-view="viewTranscribe" aria-current="page">Transcription</button>
+  <button type="button" class="tab" id="tabSummary" data-view="viewSummary">Summarization</button>
+</nav>
+
+<main class="container" id="viewTranscribe">
+  <section class="card">
+    <h2>Audio input</h2>
+    <div class="grid-2">
+      <div class="block">
+        <h3>Microphone</h3>
+        <div class="row">
+          <button id="btnStart" class="btn primary">Start Recording</button>
+          <button id="btnStop" class="btn" disabled>Stop Recording</button>
+        </div>
+        <div class="row meta">
+          <span class="rec-dot" id="recDot"></span>
+          <span id="recStatus">Not recording</span>
+          <span id="recTime" class="mono">00:00</span>
+        </div>
+        <p class="field-error" id="micError" hidden></p>
+      </div>
+      <div class="block">
+        <h3>Audio file</h3>
+        <div class="row">
+          <label class="btn file-btn" for="fileInput">Choose file</label>
+          <input type="file" id="fileInput" accept="audio/*,.wav,.mp3,.m4a,.flac,.ogg" hidden>
+          <button id="btnUpload" class="btn primary" disabled>Upload Audio</button>
+        </div>
+        <div class="row meta">
+          <span id="fileName">No file selected</span>
+          <span id="fileDuration" class="mono"></span>
+        </div>
+        <p class="meta" id="fileStatus"></p>
+        <p class="field-error" id="fileError" hidden></p>
+      </div>
+      <div class="block live-block">
+        <h3>Live meeting</h3>
+        <div class="row">
+          <button id="btnStartLive" class="btn primary">Start Live</button>
+          <button id="btnStopLive" class="btn" disabled>Stop Live</button>
+        </div>
+        <div class="row meta">
+          <span class="rec-dot" id="liveDot"></span>
+          <span id="liveStatus">Not live</span>
+          <span id="liveTime" class="mono">00:00</span>
+        </div>
+        <p class="field-error" id="liveError" hidden></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="grid-2 langs">
+      <label>Source language
+        <select id="srcLang"></select>
+      </label>
+      <label>Target language
+        <select id="tgtLang"></select>
+      </label>
+    </div>
+  </section>
+
+  <section class="card captions-card">
+    <div class="captions-head">
+      <h2>Live captions</h2>
+      <div class="status" id="status" data-state="waiting"><span class="dot"></span><span id="statusText">Waiting for audio</span></div>
+      <button id="btnClear" class="btn small">Clear Captions</button>
+    </div>
+    <div class="panels">
+      <div class="panel">
+        <h3>Original transcription</h3>
+        <div class="list" id="origList"></div>
+      </div>
+      <div class="panel">
+        <h3 id="transTitle">Translated transcription</h3>
+        <div class="list" id="transList"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main class="container" id="viewSummary" hidden>
+  <section class="card">
+    <h2>Meeting summarization</h2>
+    <p class="meta sum-intro">Paste or type a meeting transcript (original or already translated). No active transcription session is needed.</p>
+    <div class="grid-2 sum-fields">
+      <label>Meeting title or ID (optional)
+        <input type="text" id="sumTitle" maxlength="128" placeholder="e.g. Weekly product sync" autocomplete="off">
+      </label>
+      <label>Output language
+        <select id="sumLang"></select>
+      </label>
+    </div>
+    <label class="sum-field">Transcript
+      <textarea id="sumTranscript" dir="auto" spellcheck="false" placeholder="Paste the meeting transcript here. Speaker names and timestamps are optional, e.g.&#10;[00:00:05] Priya: Let's review the release plan.&#10;[00:00:12] Sam: I'll finish the QA checklist by Friday."></textarea>
+    </label>
+    <div class="row sum-actions">
+      <button type="button" id="btnSummarize" class="btn primary">Summarize</button>
+      <button type="button" id="btnSumClear" class="btn">Clear</button>
+      <span class="meta mono" id="sumCount">0 characters</span>
+    </div>
+    <p class="sum-error" id="sumError" role="alert" hidden></p>
+    <div class="sum-loading" id="sumLoading" role="status" aria-live="polite" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <span id="sumLoadingText">Summarizing…</span>
+      <button type="button" id="btnSumCancel" class="btn small">Cancel</button>
+    </div>
+  </section>
+
+  <section class="card" id="sumResultCard" hidden>
+    <div class="sum-result-head">
+      <div>
+        <h2 id="sumResultTitle">Summary</h2>
+        <p class="meta" id="sumResultMeta"></p>
+      </div>
+      <div class="row sum-result-actions">
+        <button type="button" id="btnSumCopy" class="btn small">Copy summary</button>
+        <button type="button" id="btnSumDownload" class="btn small">Download .txt</button>
+      </div>
+    </div>
+    <div class="sum-notice" id="sumWarnings" hidden></div>
+    <div class="sum-grid" id="sumResult"></div>
+  </section>
+</main>
+
+<script src="js/api.js"></script>
+<script src="js/websocket.js"></script>
+<script src="js/mock.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/captions.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

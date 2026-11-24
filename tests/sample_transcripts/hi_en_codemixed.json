@@ -1,0 +1,10 @@
+{
+  "meeting_id": "demo-hi-en-001",
+  "segments": [
+    {"speaker_id": "SPEAKER_00", "start_time": 3.2, "end_time": 9.0, "language": "hi", "text": "ठीक है, तो आज हम candidate की interview scheduling पर बात करेंगे।"},
+    {"speaker_id": "SPEAKER_01", "start_time": 9.5, "end_time": 16.0, "language": "hi", "text": "मैंने पांच candidates shortlist किए हैं, लेकिन दो लोगों का feedback अभी pending है।"},
+    {"speaker_id": "SPEAKER_00", "start_time": 16.5, "end_time": 22.0, "language": "en", "text": "Okay, so please share the final list by Monday."},
+    {"speaker_id": "SPEAKER_01", "start_time": 22.4, "end_time": 26.0, "language": "hi", "text": "ठीक है, मैं सोमवार तक भेज दूंगा।"},
+    {"speaker_id": "SPEAKER_00", "start_time": 27.0, "end_time": 33.0, "language": "hi", "text": "Panel में कौन-कौन होगा, यह अभी तय नहीं हुआ है, उस पर अगली मीटिंग में बात करेंगे।"}
+  ]
+}

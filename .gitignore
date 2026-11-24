@@ -1,0 +1,78 @@
+
+# ==============================
+# Environment variables and secrets
+# ==============================
+.env
+.env.*
+!.env.example
+
+# ==============================
+# Python cache
+# ==============================
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ==============================
+# Virtual environments
+# ==============================
+.venv/
+venv/
+env/
+
+# ==============================
+# Data and generated outputs
+# ==============================
+data/
+outputs/
+
+# ==============================
+# Model weights and checkpoints
+# ==============================
+pretrained/
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.bin
+*.ckpt
+*.tflite
+
+# ==============================
+# Logs and reports
+# ==============================
+*.log
+ruff_report
+ruff_report.txt
+
+# ==============================
+# Archives
+# ==============================
+*.zip
+*.tar
+*.gz
+
+# ==============================
+# IDE and editor files
+# ==============================
+.vscode/
+.idea/
+
+# ==============================
+# OS generated files
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# Temporary files
+# ==============================
+*.tmp
+*.bak
+*.swp

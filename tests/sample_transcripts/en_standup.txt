@@ -1,0 +1,9 @@
+[00:00:05] Speaker 1: Okay, let's start. Main topics today are the release date and the interview scheduling bug.
+[00:00:14] Speaker 2: The scheduling bug is fixed on staging. I still need to test it with the Indian time zones.
+[00:00:30] Speaker 1: Good. Can you finish that testing by Thursday?
+[00:00:34] Speaker 2: Yes, I'll finish it by Thursday.
+[00:00:50] Speaker 3: For the release, I think we should go on the 28th, but I'm not sure QA will be ready.
+[00:01:02] Speaker 1: Let's decide: release is on the 28th. Speaker 3, please confirm with QA tomorrow.
+[00:01:10] Speaker 3: Okay, I'll confirm with QA tomorrow.
+[00:01:25] Speaker 2: One open question: do we need a rollback plan for the database migration?
+[00:01:33] Speaker 1: We'll discuss that next week.
