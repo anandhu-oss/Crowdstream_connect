@@ -1,0 +1,45 @@
+/* ---- AI Interview section (additive; everything is prefixed .iv-/#iv… so it cannot affect other views) ---- */
+.nav-tab{font:inherit;font-size:.9rem;padding:6px 16px;border:1px solid var(--border);border-radius:999px;background:var(--card);color:var(--muted);cursor:pointer}
+.nav-tab:hover{border-color:var(--accent);color:var(--text)}
+.nav-tab.active{background:var(--accent-soft);border-color:#d5dcfa;color:var(--accent);font-weight:600}
+.nav-tab:focus-visible,.iv .btn:focus-visible,.iv summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.status[data-state=paused] .dot{background:var(--warn)}
+.status[data-state=preparing] .dot{animation:pulse 1.2s infinite}
+
+.iv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.iv-head h2{margin:0 0 8px}
+.iv-facts{display:flex;flex-wrap:wrap;gap:6px 28px;margin:0}
+.iv-facts div{min-width:0}
+.iv-facts dt{font-size:.75rem;color:var(--muted)}
+.iv-facts dd{margin:0;font-weight:600;word-break:break-word}
+
+.iv-counter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.iv-counter{font-weight:600}
+.iv-progress{height:6px;border-radius:999px;background:#eceef2;overflow:hidden;margin-bottom:14px}
+.iv-progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.iv-question{min-height:150px;display:flex;align-items:center;padding:18px 20px;border:1px solid var(--border);border-radius:10px;background:#fcfcfd;font-size:1.35rem;line-height:1.45;word-break:break-word}
+.iv-question.placeholder{color:var(--muted);font-size:1rem}
+.iv-audio-row{display:flex;align-items:center;gap:14px;margin:12px 0}
+.iv-wave{display:inline-flex;align-items:flex-end;gap:3px;height:18px;visibility:hidden}
+.iv-wave.on{visibility:visible}
+.iv-wave i{width:4px;height:100%;background:var(--accent);border-radius:2px;transform-origin:bottom;animation:ivwave 1s ease-in-out infinite}
+.iv-wave i:nth-child(2){animation-delay:.15s}.iv-wave i:nth-child(3){animation-delay:.3s}.iv-wave i:nth-child(4){animation-delay:.45s}
+@keyframes ivwave{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+.iv-error{background:#fdecec;color:#9b2323;border:1px solid #f3c6c6;border-radius:8px;padding:8px 12px;font-size:.9rem;margin:0 0 12px}
+.iv-error[hidden]{display:none}
+.iv-controls{margin:0}
+.iv-hint{margin:8px 0 0}
+.iv-fields label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted)}
+.iv-fields{margin-bottom:12px}
+.iv-col{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted)}
+.iv details summary{cursor:pointer;font-size:.9rem;color:var(--muted)}
+.iv details[open] summary{margin-bottom:10px}
+.iv select:disabled,.iv input:disabled{opacity:.6}
+
+@media (max-width:760px){
+  .iv-question{font-size:1.15rem;min-height:120px;padding:14px}
+  .iv-controls .btn{flex:1 1 40%}
+  .iv-audio-row .btn{flex:1}
+}
+@media (prefers-reduced-motion:reduce){.iv-wave i,.status[data-state=preparing] .dot,.iv-progress span{animation:none;transition:none}}

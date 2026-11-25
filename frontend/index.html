@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Multilingual AI Meeting Assistant</title>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/interview.css">
 </head>
 <body>
 <header class="header">
@@ -25,6 +26,7 @@
 <nav class="tabs" aria-label="Sections">
   <button type="button" class="tab active" id="tabTranscribe" data-view="viewTranscribe" aria-current="page">Transcription</button>
   <button type="button" class="tab" id="tabSummary" data-view="viewSummary">Summarization</button>
+  <button type="button" class="nav-tab" id="tabInterview" aria-controls="viewInterview">AI Interview</button>
 </nav>
 
 <main class="container" id="viewTranscribe">
@@ -148,11 +150,65 @@
   </section>
 </main>
 
+<main class="container iv" id="viewInterview" hidden>
+  <section class="card iv-head">
+    <div>
+      <h2>AI Interview</h2>
+      <dl class="iv-facts">
+        <div><dt>Candidate</dt><dd id="ivCandidate">-</dd></div>
+        <div><dt>Role</dt><dd id="ivRole">-</dd></div>
+        <div><dt>Interview ID</dt><dd id="ivId" class="mono">-</dd></div>
+      </dl>
+    </div>
+    <div class="status" id="ivStatus" data-state="waiting" role="status" aria-live="polite"><span class="dot"></span><span id="ivStatusText">Ready</span></div>
+  </section>
+
+  <section class="card">
+    <div class="iv-counter-row">
+      <span class="iv-counter" id="ivCounter">Not started</span>
+      <span class="tag sim" id="ivSource" hidden>SAMPLE QUESTIONS</span>
+    </div>
+    <div class="iv-progress" id="ivProgress" role="progressbar" aria-label="Interview progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="ivProgressBar"></span></div>
+    <div class="iv-question placeholder" id="ivQuestion" dir="auto" aria-live="polite"></div>
+    <div class="iv-audio-row">
+      <button type="button" id="ivBtnReplay" class="btn" disabled>Play question</button>
+      <span class="iv-wave" id="ivWave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </div>
+    <p class="iv-error" id="ivError" role="alert" hidden></p>
+    <div class="row iv-controls">
+      <button type="button" id="ivBtnStart" class="btn primary">Start Interview</button>
+      <button type="button" id="ivBtnPause" class="btn" disabled>Pause</button>
+      <button type="button" id="ivBtnResume" class="btn" disabled>Resume</button>
+      <button type="button" id="ivBtnStop" class="btn" disabled>Stop</button>
+    </div>
+    <p class="meta iv-hint" id="ivHint" hidden></p>
+  </section>
+
+  <section class="card">
+    <div class="grid-2 iv-fields">
+      <label>Question language
+        <select id="ivLang"></select>
+      </label>
+      <label>Voice
+        <select id="ivVoice"></select>
+      </label>
+    </div>
+    <details>
+      <summary>TTS backend</summary>
+      <label class="iv-fields iv-col"><span>Backend URL (POST <span id="ivPathLabel" class="mono"></span>)</span>
+        <input type="text" id="ivBase" autocomplete="off" spellcheck="false" placeholder="https://your-tts-server.example">
+      </label>
+      <p class="meta">Saved in this browser only. Replace the temporary Kaggle URL with the production GPU server here, or set it in <span class="mono">INTERVIEW_CONFIG</span>.</p>
+    </details>
+  </section>
+</main>
+
 <script src="js/api.js"></script>
 <script src="js/websocket.js"></script>
 <script src="js/mock.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/captions.js"></script>
 <script src="js/app.js"></script>
+<script src="js/interview.js"></script>
 </body>
 </html>

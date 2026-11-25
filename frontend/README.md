@@ -48,6 +48,15 @@ Segments sharing a `segment_id` update in place, so partial results, late transl
 
 Tick **Mock mode** in the header to test without a backend. A banner and a SIMULATED tag on every caption mark the data as fake. Mock mode lives only in `js/mock.js`; delete that file and its script tag to remove it. It has English translations only; other targets show the translation-error state.
 
+## AI Interview tab (read-aloud only)
+
+Separate section (`#interview`) in `index.html`, `css/interview.css`, `js/interview.js`. It does not use `audio.js`, the WebSocket code or captions. It only reads prepared questions aloud; there is no candidate recording, speech recognition, follow-up, evaluation or scoring.
+
+- **Backend URL**: set `baseUrl` in `INTERVIEW_CONFIG` at the top of `js/interview.js` (or `window.INTERVIEW_CONFIG` before the script), or type it under *TTS backend* in the tab (saved in this browser). Swap the temporary Kaggle URL for the production GPU server there.
+- **TTS contract (unverified)**: `POST {baseUrl}/tts` with JSON `{"text","language","voice"}` returns `audio/wav`. Change `ttsPath` / `buildTtsBody()` if the real API differs. Voices come from `INTERVIEW_CONFIG.voices`; languages default to `Api.config.fallbackLanguages`.
+- **Questions**: with `questionsPath` empty, a 6-question sample list is used and tagged SAMPLE QUESTIONS. Set `questionsPath` (e.g. `/interview/questions`) to `GET` `["q1", ...]` or `{candidate, role, interview_id, questions: [...]}`.
+- **Flow**: one request per question; the next one is requested only after the current audio ends (plus `pauseBetweenMs`). Replay reuses the audio already received and does not change the question number. Leaving the tab pauses playback.
+
 ## Files
 
-`index.html`, `css/style.css`, `js/app.js` (UI wiring), `js/audio.js` (mic and file checks), `js/api.js` (HTTP and mapping), `js/websocket.js` (live stream), `js/captions.js` (rendering), `js/mock.js` (simulated data).
+`index.html`, `css/style.css`, `js/app.js` (UI wiring), `js/audio.js` (mic and file checks), `js/api.js` (HTTP and mapping), `js/websocket.js` (live stream), `js/captions.js` (rendering), `js/mock.js` (simulated data), `css/interview.css` + `js/interview.js` (AI Interview tab).
